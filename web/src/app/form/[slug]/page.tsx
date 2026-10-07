@@ -62,37 +62,50 @@ export default function Fill() {
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
   });
-
-  if (fatal) return <div className="min-h-screen flex items-center justify-center text-2xl bg-[#f5f1e8]">{fatal}</div>;
-  if (!form) return <div className="min-h-screen bg-[#f5f1e8]" />;
+    const page = "min-h-screen bg-white flex flex-col items-center justify-center text-center px-6";
+  if (fatal) return <div className={page + " text-2xl"}>{fatal}</div>;
+  if (!form) return <div className="min-h-screen bg-white" />;
   if (done) return (
-    <div className="min-h-screen bg-[#f5f1e8] flex flex-col items-center justify-center anim-up text-center px-6">
-      <div className="text-6xl mb-4">✓</div>
+    <div className={page + " anim-up"}>
+      <div className="text-6xl mb-4" style={{ color: "var(--tf-accent)" }}>✓</div>
       <h1 className="text-4xl font-medium">Thank you!</h1>
       <p className="mt-3 text-lg opacity-70">Your response has been submitted.</p>
     </div>
   );
-  if (!q) return <div className="min-h-screen flex items-center justify-center text-2xl bg-[#f5f1e8]">This form has no questions yet.</div>;
+  if (!q) return <div className={page + " text-2xl"}>This form has no questions yet.</div>;
 
+  const pct = Math.round((i / qs.length) * 100);
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex flex-col overflow-hidden">
-      <div className="h-1 bg-black/10"><div className="h-full bg-[#262627] transition-all duration-500" style={{ width: `${(i / qs.length) * 100}%` }} /></div>
+    <div className="min-h-screen bg-white flex flex-col overflow-hidden">
       <main className="flex-1 flex items-center justify-center px-6">
         <div key={i} className={`max-w-2xl w-full ${dir > 0 ? "anim-up" : "anim-down"}`}>
-          <div className="text-sm opacity-60 mb-2">{i + 1} of {qs.length} →</div>
-          <h1 className="text-3xl md:text-4xl font-medium">{q.text}{q.required && <span className="text-red-500"> *</span>}</h1>
-          {q.description && <p className="mt-2 text-lg opacity-70">{q.description}</p>}
-          <div className="mt-8"><QuestionRenderer key={q.id} q={q} autoFocus value={ans[q.id] ?? ""} onChange={(v) => { setAns({ ...ans, [q.id]: v }); setMsg(""); }} onPick={() => setTimeout(next, 350)} /></div>
-          {msg && <div className="mt-4 inline-block bg-red-100 text-red-700 px-3 py-1 rounded">{msg}</div>}
-          <div className="mt-8 flex items-center gap-4">
-            <button onClick={next} disabled={busy} className="bg-[#262627] text-white rounded px-6 py-2 text-lg font-medium hover:bg-black">{last ? "Submit" : "OK ✓"}</button>
-            <span className="text-sm opacity-60">press <b>Enter ↵</b></span>
+          <div className="flex gap-3 items-baseline">
+            <span className="text-lg whitespace-nowrap" style={{ color: "var(--tf-accent)" }}>{i + 1} →</span>
+            <h1 className="text-2xl md:text-3xl font-medium">{q.text}{q.required && <span className="text-red-500"> *</span>}</h1>
+          </div>
+          <div className="pl-10 mt-2">
+            {q.description && <p className="text-lg opacity-70 mb-4">{q.description}</p>}
+            <div className="mt-6">
+              <QuestionRenderer key={q.id} q={q} autoFocus value={ans[q.id] ?? ""}
+                onChange={(v) => { setAns({ ...ans, [q.id]: v }); setMsg(""); }} onPick={() => setTimeout(next, 350)} />
+            </div>
+            {msg && <div className="mt-4 inline-block bg-red-100 text-red-700 px-3 py-1 rounded">{msg}</div>}
+            <div className="mt-8 flex items-center gap-4">
+              <button onClick={next} disabled={busy} className="tf-btn">{last ? "Submit" : "OK ✓"}</button>
+              <span className="text-sm opacity-60">press <b>Enter ↵</b></span>
+            </div>
           </div>
         </div>
       </main>
-      <footer className="p-4 flex justify-end gap-2">
-        <button onClick={prev} disabled={i === 0} className="w-10 h-10 rounded bg-[#262627] text-white disabled:opacity-30">↑</button>
-        <button onClick={next} className="w-10 h-10 rounded bg-[#262627] text-white">↓</button>
+      <footer className="p-5 flex items-center justify-between">
+        <div className="w-56">
+          <div className="text-xs mb-1 opacity-70">{pct}% completed</div>
+          <div className="h-1.5 rounded bg-black/10"><div className="h-full rounded transition-all duration-500" style={{ width: `${pct}%`, background: "var(--tf-accent)" }} /></div>
+        </div>
+        <div className="flex">
+          <button onClick={prev} disabled={i === 0} className="tf-btn" style={{ borderRadius: "4px 0 0 4px" }}>↑</button>
+          <button onClick={next} className="tf-btn" style={{ borderRadius: "0 4px 4px 0", borderLeft: "1px solid rgba(255,255,255,.3)" }}>↓</button>
+        </div>
       </footer>
     </div>
   );

@@ -55,7 +55,7 @@ export default function Builder() {
           onBlur={(e) => e.target.value.trim() && api.rename(form.id, e.target.value.trim()).then(() => say("Saved"))} />
         <Link href={`/results/${form.id}`} className="text-sm hover:underline">Results</Link>
         {form.status === "published" && <a href={`/form/${form.slug}`} target="_blank" className="text-sm hover:underline">Open ↗</a>}
-        <button onClick={togglePublish} className="bg-[#262627] text-white rounded-full px-5 py-1.5 text-sm">
+        <button onClick={togglePublish} className="tf-btn !rounded-full !py-1.5 !text-sm">
           {form.status === "published" ? "Unpublish" : "Publish"}
         </button>
       </header>
@@ -102,14 +102,14 @@ export default function Builder() {
           ) : <div className="text-gray-500">Select or add a question.</div>}
         </section>
 
-        <section className="flex-1 bg-[#f5f1e8] flex items-center justify-center p-10 overflow-y-auto">
+        <section className="flex-1 bg-white flex items-center justify-center p-10 overflow-y-auto">
           {cur ? (
             <div key={cur.id} className="max-w-xl w-full anim-up">
               <div className="text-sm opacity-60 mb-2">{qs.findIndex((q) => q.id === cur.id) + 1} →</div>
               <h2 className="text-3xl font-medium mb-1">{cur.text}{cur.required && <span className="text-red-500"> *</span>}</h2>
               {cur.description && <p className="opacity-70 mb-6 text-lg">{cur.description}</p>}
               <div className="mt-6"><QuestionRenderer q={cur} value={pv} onChange={setPv} /></div>
-              <button className="mt-8 bg-[#262627] text-white rounded px-6 py-2 font-medium">OK ✓</button>
+              <button className="mt-8 tf-btn">OK ✓</button>
             </div>
           ) : <div className="opacity-50">Live preview</div>}
         </section>
