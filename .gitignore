@@ -1,0 +1,7 @@
+backend/venv/
+backend/forms.db
+__pycache__/
+*.pyc
+.env
+# temporary: old leftover folder, remove this line after renaming web to frontend
+frontend/

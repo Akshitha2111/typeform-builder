@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #262627; background: #fff; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: none; } }
+.anim-up { animation: slideUp .45s cubic-bezier(.2,.8,.2,1); }
+.anim-down { animation: slideDown .45s cubic-bezier(.2,.8,.2,1); }
